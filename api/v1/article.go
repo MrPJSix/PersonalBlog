@@ -27,7 +27,7 @@ func AddArticle(c *gin.Context) {
 	})
 }
 
-// 查询文章下的所有文章
+// 查询分类下的所有文章
 func GetCateArt(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
@@ -40,10 +40,11 @@ func GetCateArt(c *gin.Context) {
 		pageNum = -1
 	}
 
-	data, code := model.GetCateArt(cid, pageSize, pageNum)
+	data, code, total := model.GetCateArt(cid, pageSize, pageNum)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
+		"total":   total,
 		"data":    data,
 		"message": errmsg.GetErrMsg(code),
 	})
@@ -71,10 +72,11 @@ func GetArticles(c *gin.Context) {
 	if pageNum == 0 {
 		pageNum = -1
 	}
-	data, code := model.GetArticles(pageSize, pageNum)
+	data, code, total := model.GetArticles(pageSize, pageNum)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
+		"total":   total,
 		"data":    data,
 		"message": errmsg.GetErrMsg(code),
 	})
